@@ -29,6 +29,21 @@
       <version>${akka.version}</version>
     </dependency>
     <dependency>
+      <groupId>com.typesafe.akka</groupId>
+      <artifactId>akka-slf4j_${akka.actor.version}</artifactId>
+      <version>${akka.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.lightbend.cinnamon</groupId>
+      <artifactId>cinnamon-prometheus</artifactId>
+      <version>2.14.3</version>
+    </dependency>
+    <dependency>
+      <groupId>com.lightbend.cinnamon</groupId>
+      <artifactId>cinnamon-prometheus-httpserver</artifactId>
+      <version>2.14.3</version>
+    </dependency>
+    <dependency>
       <groupId>ch.qos.logback</groupId>
       <artifactId>logback-classic</artifactId>
       <version>1.2.3</version>
@@ -66,12 +81,16 @@
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>exec-maven-plugin</artifactId>
         <version>1.6.0</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>java</goal>
+            </goals>
+          </execution>
+        </executions>
         <configuration>
-          <executable>java</executable>
+          <mainClass>y.w.Main</mainClass>
           <arguments>
-            <argument>-classpath</argument>
-            <classpath/>
-            <argument>com.example.AkkaQuickstart</argument>
           </arguments>
         </configuration>
       </plugin>

@@ -3,12 +3,12 @@ package y.w.test;
 import akka.actor.AbstractLoggingActor;
 import akka.actor.ActorRef;
 import akka.actor.Props;
-import java.util.ArrayList;
-import java.util.List;
+import y.w.c1.message.HelloMessage;
+import y.w.c1.message.MyNameIs;
+import y.w.c1.message.WhatsYourName;
 
 public class PeopleActor extends AbstractLoggingActor {
-
-    List<ActorRef> kids = new ArrayList<>();
+    ActorRef target;
 
     public static Props props() {
         return Props.create(PeopleActor.class, PeopleActor::new);
@@ -33,7 +33,8 @@ public class PeopleActor extends AbstractLoggingActor {
     @Override
     public Receive createReceive() {
         return receiveBuilder()
-                .match(HelloMessage.class, o -> log().info("Thanks for " + o.message))
+                .match(HelloMessage.class, m -> log().info("Thanks for " + m.getMessage()))
+                .match(WhatsYourName.class, m -> sender().tell(getMyName() , self()))
                 .match(
                         ActorRef.class,
                         actorRef -> {
@@ -51,15 +52,13 @@ public class PeopleActor extends AbstractLoggingActor {
         log().error("Not handled : " + message.toString());
     }
 
-    interface Command {}
-
-    static class HelloMessage implements Command {
-        public final String message;
-
-        public HelloMessage(String message) {
-            this.message = message;
+    private MyNameIs getMyName() {
+        try {
+            Thread.sleep(20000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
-    }
 
-    static class TerminalMessage implements Command {}
+        return new MyNameIs("My name is " + self().toString());
+    }
 }
